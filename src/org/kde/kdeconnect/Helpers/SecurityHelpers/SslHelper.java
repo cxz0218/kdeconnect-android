@@ -59,12 +59,21 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 import javax.security.auth.x500.X500Principal;
 
+/**
+ * Public-key cryptography implements a security helper class that logs on and connects
+ * through a public key private key password.
+ */
 public class SslHelper {
 
     public static X509Certificate certificate; //my device's certificate
 
     public static final BouncyCastleProvider BC = new BouncyCastleProvider();
 
+    /**
+     * Initialise Certificate.
+     *
+     * @param context
+     */
     public static void initialiseCertificate(Context context) {
         PrivateKey privateKey;
         PublicKey publicKey;
@@ -141,6 +150,12 @@ public class SslHelper {
         }
     }
 
+    /**
+     * Set the locale.
+     *
+     * @param locale
+     * @param context
+     */
     private static void setLocale(Locale locale, Context context) {
         Locale.setDefault(locale);
         Resources resources = context.getResources();
@@ -149,12 +164,27 @@ public class SslHelper {
         resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
 
+    /**
+     * Judge if store certificate or not.
+     *
+     * @param context
+     * @param deviceId
+     * @return
+     */
     public static boolean isCertificateStored(Context context, String deviceId) {
         SharedPreferences devicePreferences = context.getSharedPreferences(deviceId, Context.MODE_PRIVATE);
         String cert = devicePreferences.getString("certificate", "");
         return !cert.isEmpty();
     }
 
+    /**
+     * Get the sslContext
+     *
+     * @param context
+     * @param deviceId
+     * @param isDeviceTrusted
+     * @return
+     */
     private static SSLContext getSslContext(Context context, String deviceId, boolean isDeviceTrusted) {
         //TODO: Cache
         try {
@@ -219,6 +249,14 @@ public class SslHelper {
 
     }
 
+    /**
+     * Configure the sslSocket.
+     *
+     * @param socket
+     * @param isDeviceTrusted
+     * @param isClient
+     * @throws SocketException
+     */
     private static void configureSslSocket(SSLSocket socket, boolean isDeviceTrusted, boolean isClient) throws SocketException {
 
         // These cipher suites are most common of them that are accepted by kde and android during handshake
@@ -245,6 +283,17 @@ public class SslHelper {
 
     }
 
+    /**
+     * Convert to the SslSocket.
+     *
+     * @param context
+     * @param socket
+     * @param deviceId
+     * @param isDeviceTrusted
+     * @param clientMode
+     * @return
+     * @throws IOException
+     */
     public static SSLSocket convertToSslSocket(Context context, Socket socket, String deviceId, boolean isDeviceTrusted, boolean clientMode) throws IOException {
         SSLSocketFactory sslsocketFactory = SslHelper.getSslContext(context, deviceId, isDeviceTrusted).getSocketFactory();
         SSLSocket sslsocket = (SSLSocket) sslsocketFactory.createSocket(socket, socket.getInetAddress().getHostAddress(), socket.getPort(), true);
@@ -252,6 +301,12 @@ public class SslHelper {
         return sslsocket;
     }
 
+    /**
+     * Get the certificate hash.
+     *
+     * @param certificate
+     * @return
+     */
     public static String getCertificateHash(Certificate certificate) {
         try {
             byte[] hash = MessageDigest.getInstance("SHA-1").digest(certificate.getEncoded());
@@ -267,11 +322,25 @@ public class SslHelper {
         }
     }
 
+    /**
+     * To parse.
+     *
+     * @param certificateBytes
+     * @return
+     * @throws IOException
+     * @throws CertificateException
+     */
     public static Certificate parseCertificate(byte[] certificateBytes) throws IOException, CertificateException {
         X509CertificateHolder certificateHolder = new X509CertificateHolder(certificateBytes);
         return new JcaX509CertificateConverter().setProvider(BC).getCertificate(certificateHolder);
     }
 
+    /**
+     * Get the commonname from certificate.
+     *
+     * @param cert
+     * @return
+     */
     private static String getCommonNameFromCertificate(X509Certificate cert) {
         X500Principal principal = cert.getSubjectX500Principal();
         X500Name x500name = new X500Name(principal.getName());

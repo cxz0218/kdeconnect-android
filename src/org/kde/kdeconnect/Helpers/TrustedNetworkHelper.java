@@ -15,6 +15,9 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
 
+/**
+ * Trust network permission settings to get the help class for the key.
+ */
 public class TrustedNetworkHelper {
 
     private static final String KEY_CUSTOM_TRUSTED_NETWORKS = "trusted_network_preference";
@@ -25,10 +28,20 @@ public class TrustedNetworkHelper {
 
     private final Context context;
 
+    /**
+     * To assign value to context.
+     *
+     * @param context
+     */
     public TrustedNetworkHelper(Context context) {
         this.context = context;
     }
 
+    /**
+     * Perform the read operation,
+     *
+     * @return
+     */
     public String[] read() {
         String serializeTrustedNetwork = PreferenceManager.getDefaultSharedPreferences(context).getString(
                 KEY_CUSTOM_TRUSTED_NETWORKS, "");
@@ -37,12 +50,22 @@ public class TrustedNetworkHelper {
         return serializeTrustedNetwork.split(NETWORK_SSID_DELIMITER);
     }
 
+    /**
+     * Perform the update operation.
+     *
+     * @param trustedNetworks
+     */
     public void update(List<String> trustedNetworks) {
         String serialized = TextUtils.join(NETWORK_SSID_DELIMITER, trustedNetworks);
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString(
                 KEY_CUSTOM_TRUSTED_NETWORKS, serialized).apply();
     }
 
+    /**
+     * Judge if is allowed for all.
+     *
+     * @return
+     */
     public boolean allAllowed() {
         if (!hasPermissions()) {
             return true;
@@ -52,6 +75,11 @@ public class TrustedNetworkHelper {
                 .getBoolean(KEY_CUSTOM_TRUST_ALL_NETWORKS, Boolean.TRUE);
     }
 
+    /**
+     * Judge if is allowed for all.
+     *
+     * @param isChecked
+     */
     public void allAllowed(boolean isChecked) {
         PreferenceManager
                 .getDefaultSharedPreferences(context)
@@ -60,11 +88,21 @@ public class TrustedNetworkHelper {
                 .apply();
     }
 
+    /**
+     * Judge if has permissions or not.
+     *
+     * @return
+     */
     public boolean hasPermissions() {
         int result = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
         return (result == PackageManager.PERMISSION_GRANTED);
     }
 
+    /**
+     * Get the current SSID.
+     *
+     * @return
+     */
     public String currentSSID() {
         WifiManager wifiManager = ContextCompat.getSystemService(context.getApplicationContext(),
                 WifiManager.class);
@@ -80,6 +118,12 @@ public class TrustedNetworkHelper {
         return ssid;
     }
 
+    /**
+     * Judge if is trusted network or not.
+     *
+     * @param context
+     * @return
+     */
     public static boolean isTrustedNetwork(Context context) {
         TrustedNetworkHelper trustedNetworkHelper = new TrustedNetworkHelper(context);
         if (trustedNetworkHelper.allAllowed()){

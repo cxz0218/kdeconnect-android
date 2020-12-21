@@ -19,6 +19,9 @@ import org.kde.kdeconnect_tp.R;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+/**
+ * Basic settings for starting startup activities (creation, initial content, full screen, initial title, and priority).
+ */
 public class IntentHelper {
 
     /**

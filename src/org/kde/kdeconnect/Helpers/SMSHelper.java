@@ -59,6 +59,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import kotlin.text.Charsets;
 
+/**
+ * The settings handling class for the dialog messaging service and its URL.
+ */
 @SuppressLint("InlinedApi")
 public class SMSHelper {
 
@@ -75,11 +78,20 @@ public class SMSHelper {
         return Telephony.Sms.CONTENT_URI;
     }
 
+    /**
+     * Get MMS url.
+     * @return
+     */
     private static Uri getMMSUri() {
         // Same warning as getSMSUri: This constant was introduced with API 19
         return Telephony.Mms.CONTENT_URI;
     }
 
+    /**
+     * Get MMS part url.
+     *
+     * @return
+     */
     public static Uri getMMSPartUri() {
         // Android says we should have Telephony.Mms.Part.CONTENT_URI. Alas, we do not.
         return Uri.parse("content://mms/part/");

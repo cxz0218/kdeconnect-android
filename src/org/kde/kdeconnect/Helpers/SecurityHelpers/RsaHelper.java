@@ -21,11 +21,22 @@ import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
+/**
+ * Set the public key and private key security helper classes for public-key cryptography.
+ */
 public class RsaHelper {
 
+    /**
+     * Initializing RSAkey
+     *
+     * @param context
+     */
     public static void initialiseRsaKeys(Context context) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
 
+        /**
+         * Determines whether the public key and the private key are included
+         */
         if (!settings.contains("publicKey") || !settings.contains("privateKey")) {
 
             KeyPair keyPair;
@@ -50,12 +61,26 @@ public class RsaHelper {
 
     }
 
+    /**
+     * get the Public Key.
+     *
+     * @param context
+     * @return
+     * @throws GeneralSecurityException
+     */
     public static PublicKey getPublicKey(Context context) throws GeneralSecurityException {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         byte[] publicKeyBytes = Base64.decode(settings.getString("publicKey", ""), 0);
         return KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(publicKeyBytes));
     }
 
+    /**
+     * get the Private Key.
+     *
+     * @param context
+     * @return
+     * @throws GeneralSecurityException
+     */
     public static PrivateKey getPrivateKey(Context context) throws GeneralSecurityException {
         SharedPreferences globalSettings = PreferenceManager.getDefaultSharedPreferences(context);
         byte[] privateKeyBytes = Base64.decode(globalSettings.getString("privateKey", ""), 0);

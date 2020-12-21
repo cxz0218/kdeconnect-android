@@ -12,8 +12,14 @@ import androidx.core.content.ContextCompat;
 
 import org.kde.kdeconnect_tp.R;
 
+/**
+ * Assistant class for Administrator Notification Information for file transfer and Priority Setting.
+ */
 public class NotificationHelper {
 
+    /**
+     * The channel class.
+     */
     public static class Channels {
         public final static String PERSISTENT = "persistent";
         public final static String DEFAULT = "default";
@@ -24,6 +30,13 @@ public class NotificationHelper {
         public final static String HIGHPRIORITY = "highpriority";
     }
 
+    /**
+     * Notify the compat.
+     *
+     * @param notificationManager
+     * @param notificationId
+     * @param notification
+     */
     public static void notifyCompat(NotificationManager notificationManager, int notificationId, Notification notification) {
         try {
             notificationManager.notify(notificationId, notification);
@@ -33,6 +46,14 @@ public class NotificationHelper {
         }
     }
 
+    /**
+     * Notify the compat.
+     *
+     * @param notificationManager
+     * @param tag
+     * @param notificationId
+     * @param notification
+     */
     public static void notifyCompat(NotificationManager notificationManager, String tag, int notificationId, Notification notification) {
         try {
             notificationManager.notify(tag, notificationId, notification);
@@ -42,6 +63,11 @@ public class NotificationHelper {
         }
     }
 
+    /**
+     * Initialize channels.
+     *
+     * @param context
+     */
     public static void initializeChannels(Context context) {
 
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {
@@ -94,12 +120,23 @@ public class NotificationHelper {
         manager.createNotificationChannel(highPriority);
     }
 
-
+    /**
+     * Set persistent notification enabled.
+     *
+     * @param context
+     * @param enabled
+     */
     public static void setPersistentNotificationEnabled(Context context, boolean enabled) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit().putBoolean("persistentNotification", enabled).apply();
     }
 
+    /**
+     * Judge if persistent notification enabled.
+     *
+     * @param context
+     * @return
+     */
     public static boolean isPersistentNotificationEnabled(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return true;

@@ -12,8 +12,18 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+/**
+ * Authentication login help class for the App administrator role.
+ */
 public class AppsHelper {
 
+    /**
+     * Look up the name of app.
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
     public static String appNameLookup(Context context, String packageName) {
 
         try {
@@ -33,6 +43,13 @@ public class AppsHelper {
 
     }
 
+    /**
+     * Look up the app icon.
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
     public static Drawable appIconLookup(Context context, String packageName) {
 
         try {

@@ -27,6 +27,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Mobile Assistant Management Class for Mobile Subscription Management and notification.
+ */
 public class TelephonyHelper {
 
     public static final String LOGGING_TAG = "TelephonyHelper";

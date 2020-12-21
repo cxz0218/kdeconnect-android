@@ -38,12 +38,19 @@ import java.util.Map;
 
 import kotlin.text.Charsets;
 
+/**
+ * Handle connection issues between devices for file transfers and pop-up help classes that prompt to the page.
+ */
 public class ContactsHelper {
 
     static final String LOG_TAG = "ContactsHelper";
 
     /**
      * Lookup the name and photoID of a contact given a phone number
+     *
+     * @param context
+     * @param number
+     * @return
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static Map<String, String> phoneNumberLookup(Context context, String number) {
@@ -76,6 +83,13 @@ public class ContactsHelper {
         return contactInfo;
     }
 
+    /**
+     * Encode the photo id.
+     *
+     * @param context
+     * @param photoId
+     * @return
+     */
     public static String photoId64Encoded(Context context, String photoId) {
         if (photoId == null) {
             return "";

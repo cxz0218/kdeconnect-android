@@ -6,6 +6,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
 
+/**
+ * Helper class that sets the URL and format and delay of the video to be transmitted
+ */
 public class VideoUrlsHelper {
     private static final int SECONDS_IN_MINUTE = 60;
     private static final int MINUTES_IN_HOUR = 60;
@@ -54,7 +57,13 @@ public class VideoUrlsHelper {
         return url;
     }
 
-    // Returns timestamp in 1h2m34s or 01h02m34s (according to padWithZeroes)
+    /**
+     * Returns timestamp in 1h2m34s or 01h02m34s (according to padWithZeroes)
+     *
+     * @param seconds
+     * @param padWithZeroes
+     * @return
+     */
     private static String formatTimestampHMS(long seconds, boolean padWithZeroes) {
         if (seconds == 0) {
             return "0s";
@@ -81,22 +90,48 @@ public class VideoUrlsHelper {
 
     }
 
-    // Remove timestamp in 01h02m34s or 1h2m34s or 02m34s or 2m34s or 01s or 1s format.
-    // Can also nandle rimestamps in 1234s format if called with 's' trailer
+    /**
+     * Remove timestamp in 01h02m34s or 1h2m34s or 02m34s or 2m34s or 01s or 1s format.
+     * Can also nandle rimestamps in 1234s format if called with 's' trailer
+     *
+     * @param url
+     * @param parameter
+     * @param trailer
+     * @param inQuery
+     * @return
+     * @throws MalformedURLException
+     */
     private static URL stripTimestampHMS(URL url, String parameter, String trailer, boolean inQuery)
             throws MalformedURLException {
         String regex = parameter + "([\\d]+[hH])?([\\d]+[mM])?[\\d]+[sS]" + trailer + "&?";
         return stripTimestampCommon(url, inQuery, regex);
     }
 
-
-    // Remove timestamp in 1234 format
+    /**
+     * Remove timestamp in 1234 format
+     *
+     * @param url
+     * @param parameter
+     * @param trailer
+     * @param inQuery
+     * @return
+     * @throws MalformedURLException
+     */
     private static URL stripTimestampS(URL url, String parameter, String trailer, boolean inQuery)
             throws MalformedURLException {
         String regex = parameter + "[\\d]+" + trailer + "&?";
         return stripTimestampCommon(url, inQuery, regex);
     }
 
+    /**
+     * Universal Timestamp.
+     *
+     * @param url
+     * @param inQuery
+     * @param regex
+     * @return
+     * @throws MalformedURLException
+     */
     private static URL stripTimestampCommon(URL url, boolean inQuery, String regex)
             throws MalformedURLException {
         String value;
@@ -116,6 +151,17 @@ public class VideoUrlsHelper {
         return new URL(replaced);
     }
 
+    /**
+     * Construct a securely encrypted URL
+     *
+     * @param url
+     * @param position
+     * @param parameter
+     * @param trailer
+     * @param inQuery
+     * @return
+     * @throws MalformedURLException
+     */
     private static URL formatUrlWithSeek(URL url, String position, String parameter, String trailer,
                                          boolean inQuery) throws MalformedURLException {
         String value;

@@ -18,6 +18,9 @@ import com.jaredrummler.android.device.DeviceName;
 
 import org.kde.kdeconnect.Device;
 
+/**
+ * Help class for device-specific settings such as screen-size displays provide help in getting device information.
+ */
 public class DeviceHelper {
 
     public static final int ProtocolVersion = 7;
@@ -37,6 +40,11 @@ public class DeviceHelper {
         return (uiMode & Configuration.UI_MODE_TYPE_MASK) == Configuration.UI_MODE_TYPE_TELEVISION;
     }
 
+    /**
+     * Get the device type.
+     * @param context
+     * @return
+     */
     public static Device.DeviceType getDeviceType(Context context) {
         if (isTv(context)) {
             return Device.DeviceType.Tv;
@@ -47,7 +55,12 @@ public class DeviceHelper {
         }
     }
 
-    //It returns getAndroidDeviceName() if no user-defined name has been set with setDeviceName().
+    /**
+     * It returns getAndroidDeviceName() if no user-defined name has been set with setDeviceName().
+     *
+     * @param context
+     * @return
+     */
     public static String getDeviceName(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         // Could use preferences.contains but would need to check for empty String anyway.
@@ -62,6 +75,11 @@ public class DeviceHelper {
         return deviceName;
     }
 
+    /**
+     * Fetch the device name.
+     *
+     * @param context
+     */
     private static void backgroundFetchDeviceName(final Context context) {
         DeviceName.with(context).request((info, error) -> {
             fetchingName = false;
@@ -78,11 +96,23 @@ public class DeviceHelper {
         });
     }
 
+    /**
+     * Set the device name.
+     *
+     * @param context
+     * @param name
+     */
     public static void setDeviceName(Context context, String name) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         preferences.edit().putString(KEY_DEVICE_NAME_PREFERENCE, name).apply();
     }
 
+    /**
+     * Get the device id.
+     *
+     * @param context
+     * @return
+     */
     public static String getDeviceId(Context context) {
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }

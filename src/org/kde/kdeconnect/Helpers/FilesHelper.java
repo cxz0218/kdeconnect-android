@@ -25,14 +25,31 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Arrays;
 
+/**
+ * The implementation of the file system in a series of statistical operations to
+ * find files and handle file name errors and other issues and pop up.
+ */
 public class FilesHelper {
     public static final String LOG_TAG = "SendFileActivity";
 
+    /**
+     * Get the mime type from file.
+     *
+     * @param file
+     * @return
+     */
     public static String getMimeTypeFromFile(String file) {
         String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(FilenameUtils.getExtension(file));
         return StringUtils.defaultString(mime, "*/*");
     }
 
+    /**
+     * Find a non-existing name for the new file.
+     *
+     * @param path
+     * @param filename
+     * @return
+     */
     public static String findNonExistingNameForNewFile(String path, String filename) {
         String name = FilenameUtils.getBaseName(filename);
         String ext = FilenameUtils.getExtension(filename);
@@ -47,10 +64,14 @@ public class FilesHelper {
     }
 
     //Following code from http://activemq.apache.org/maven/5.7.0/kahadb/apidocs/src-html/org/apache/kahadb/util/IOHelper.html
-
     /**
      * Converts any string into a string that is safe to use as a file name.
      * The result will only include ascii characters and numbers, and the "-","_", and "." characters.
+     *
+     * @param name
+     * @param dirSeparators
+     * @param maxFileLength
+     * @return
      */
     private static String toFileSystemSafeName(String name, boolean dirSeparators, int maxFileLength) {
         int size = name.length();
@@ -74,24 +95,51 @@ public class FilesHelper {
         return result;
     }
 
+    /**
+     * Safe name to the file system.
+     *
+     * @param name
+     * @param dirSeparators
+     * @return
+     */
     public static String toFileSystemSafeName(String name, boolean dirSeparators) {
         return toFileSystemSafeName(name, dirSeparators, 255);
     }
 
+    /**
+     * Safe name to the file system.
+     *
+     * @param name
+     * @return
+     */
     public static String toFileSystemSafeName(String name) {
         return toFileSystemSafeName(name, true, 255);
     }
 
+    /**
+     * Get open file count.
+     *
+     * @return
+     */
     private static int GetOpenFileCount() {
         return new File("/proc/self/fd").listFiles().length;
     }
 
+    /**
+     * Log open file count.
+     */
     public static void LogOpenFileCount() {
         Log.e("KDE/FileCount", "" + GetOpenFileCount());
     }
 
-
-    //Create the network package from the URI
+    /**
+     * Create the network package from the URI.
+     *
+     * @param context
+     * @param uri
+     * @param type
+     * @return
+     */
     public static NetworkPacket uriToNetworkPacket(final Context context, final Uri uri, String type) {
 
         try {
@@ -179,6 +227,10 @@ public class FilesHelper {
      * Therefore, my brilliant solution is to just try everything until something works.
      *
      * Will return null if nothing worked.
+     *
+     * @param context
+     * @param uri
+     * @return
      */
     public static Long getLastModifiedTime(final Context context, final Uri uri) {
         ContentResolver cr = context.getContentResolver();

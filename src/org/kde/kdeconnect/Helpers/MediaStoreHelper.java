@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+/**
+ * Consecutive calls to the batch media information storage assistant.
+ */
 public class MediaStoreHelper {
 
     //Maybe this class could batch successive calls together

@@ -31,6 +31,10 @@ import java.util.stream.Collectors;
 
 //Code from http://stackoverflow.com/questions/9340332/how-can-i-get-the-list-of-mounted-external-storage-of-android-device/19982338#19982338
 //modified to work on Lollipop and other devices
+
+/**
+ * Store the appropriate content in the appropriate device’s good storage helper class and patch settings.
+ */
 public class StorageHelper {
 
     public static class StorageInfo {
@@ -40,6 +44,14 @@ public class StorageHelper {
         public final boolean removable;
         public final int number;
 
+        /**
+         * Parametric constructor.
+         *
+         * @param path
+         * @param readonly
+         * @param removable
+         * @param number
+         */
         public StorageInfo(String path, boolean readonly, boolean removable, int number) {
             this.path = path;
             this.readonly = readonly;
